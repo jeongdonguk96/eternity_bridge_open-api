@@ -3,7 +3,10 @@ package com.eternity_bridge.open_api.pet.controller
 import com.eternity_bridge.open_api.common.dto.SingleResponse
 import com.eternity_bridge.open_api.common.service.ResponseService
 import com.eternity_bridge.open_api.pet.dto.CreatePetRequest
+import com.eternity_bridge.open_api.pet.entity.Pet
 import com.eternity_bridge.open_api.pet.service.PetService
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -22,6 +25,14 @@ class PetController(
     ): SingleResponse<Long> {
         val memberId = 1L
         return responseService.getSingleResponse(petService.createPet(request, memberId))
+    }
+
+
+    @GetMapping
+    fun getPet(
+        @PathVariable(name = "petId") petId: Long,
+    ): SingleResponse<Pet> {
+        return responseService.getSingleResponse(petService.getPet(petId))
     }
 
 }

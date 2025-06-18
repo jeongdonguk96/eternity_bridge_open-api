@@ -1,14 +1,13 @@
 package com.eternity_bridge.open_api.pet.service
 
-import com.eternity_bridge.open_api.common.dto.SliceResponse
 import com.eternity_bridge.open_api.exception.code.PetErrorCode
 import com.eternity_bridge.open_api.exception.exception.CommonException
 import com.eternity_bridge.open_api.pet.dto.CreatePetRequest
+import com.eternity_bridge.open_api.pet.entity.Pet
 import com.eternity_bridge.open_api.pet.repository.PetRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.slf4j.MDC
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 private val log = KotlinLogging.logger {}
 
@@ -17,7 +16,6 @@ class PetService(
     private val petRepository: PetRepository
 ) {
 
-    @Transactional
     fun createPet(
        request: CreatePetRequest,
        memberId: Long
@@ -29,6 +27,12 @@ class PetService(
         log.info { "$trxId 반려동물 등록 성공" }
 
         return pet.id!!
+    }
+
+
+    fun getPet(petId: Long): Pet {
+        return petRepository.findById(petId)
+            .orElseThrow { CommonException(PetErrorCode.PET_NOT_FOUND) }
     }
 
 
