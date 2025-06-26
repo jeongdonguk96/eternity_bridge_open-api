@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'com.eternity-bridge.open-api' is invalid and this project uses 'com.eternity_bridge.open_api' instead.
+* The original package name 'com.eternity-bridge.open-api' is invalid and this project uses 'com.eternity_bridge.openapi' instead.
 
 # Getting Started
 
