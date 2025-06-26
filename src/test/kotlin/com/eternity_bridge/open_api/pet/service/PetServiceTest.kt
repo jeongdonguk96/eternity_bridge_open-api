@@ -1,68 +1,62 @@
 package com.eternity_bridge.open_api.pet.service
 
+import com.eternity_bridge.open_api.common.AbstractTest
 import com.eternity_bridge.open_api.pet.enums.PetType
-import com.eternity_bridge.open_api.pet.repository.PetRepository
-import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.slf4j.MDC
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
-@ActiveProfiles("test")
-@SpringBootTest
-class PetServiceTest(
-    @Autowired private val petService: PetService,
-    @Autowired private val petRepository: PetRepository
-) : FunSpec() {
+class PetServiceTest : AbstractTest(){
 
-    init {
-        beforeTest {
-            MDC.put("trxId", "test-transaction-id")
-        }
-
-        afterTest {
-            petRepository.deleteAll()
-            MDC.clear()
-        }
-
-
-        test("반려동물이 성공적으로 생성된다.") {
-            // given
-            val request = PetFixtureFactory.createPetRequest(
-                name = "보나",
-                petType = PetType.DOG,
-            )
-            val memberId = 1L
-
-            // when
-            val result = petService.createPet(request, memberId)
-
-            // then
-            petRepository.existsById(result) shouldBe true
-            petRepository.count() shouldBe 1L
-            result shouldBe 1L
-        }
-
-
-        test("반려동물이 성공적으로 조회된다.") {
-            // given
-            val request = PetFixtureFactory.createPetRequest(
-                name = "보나",
-                petType = PetType.DOG,
-            )
-            val memberId = 1L
-            val petId = petService.createPet(request, memberId)
-
-            // when
-            val result = petService.getPet(petId)
-
-            // then
-            result.id shouldBe 2L
-            result.id shouldBe petId
-            result.name shouldBe request.name
-            result.petType shouldBe request.petType
-        }
+    @BeforeEach
+    fun setUp() {
+        MDC.put("trxId", "test-transaction-id")
     }
 
+    @AfterEach
+    fun tearDown() {
+        petRepository.deleteAll()
+        MDC.clear()
+    }
+
+    @Test
+    fun `반려동물이 생성된다`() {
+        // given
+        val request = PetFixtureFactory.createPetRequest(
+            name = "보나",
+            petType = PetType.DOG,
+        )
+        val memberId = 1L
+
+        // when
+        val result = petService.createPet(request, memberId)
+
+        // then
+        assertTrue(petRepository.existsById(result))
+        assertEquals(1L, petRepository.count())
+        assertEquals(1L, result)
+    }
+
+    @Test
+    fun `반려동물이 조회된다`() {
+        // given
+        val request = PetFixtureFactory.createPetRequest(
+            name = "보나",
+            petType = PetType.DOG,
+        )
+        val memberId = 1L
+        val petId = petService.createPet(request, memberId)
+
+        // when
+        val result = petService.getPet(petId)
+
+        // then
+        assertEquals(1L, result.id)
+        assertEquals(petId, result.id)
+        assertEquals(request.name, result.name)
+        assertEquals(request.petType, result.petType)
+    }
 }

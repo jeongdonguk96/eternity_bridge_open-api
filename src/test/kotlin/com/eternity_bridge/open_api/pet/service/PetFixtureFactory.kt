@@ -10,7 +10,6 @@ object PetFixtureFactory {
         .plugin(KotlinPlugin())
         .build()
 
-
     fun createPetRequest(
         name: String? = null,
         petType: PetType? = null
