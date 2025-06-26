@@ -28,7 +28,7 @@ class PetController(
     }
 
 
-    @GetMapping
+    @GetMapping("/{petId}")
     fun getPet(
         @PathVariable(name = "petId") petId: Long,
     ): SingleResponse<Pet> {
