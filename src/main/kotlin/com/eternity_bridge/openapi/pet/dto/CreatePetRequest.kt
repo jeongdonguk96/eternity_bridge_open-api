@@ -12,8 +12,8 @@ import java.time.LocalDate
 import java.util.Date
 
 data class CreatePetRequest(
-    @field:NotBlank(message = "이름은 필수입니다")
-    @field:Size(max = 20, message = "이름은 20자를 초과할 수 없습니다")
+    @field:NotBlank(message = "이름은 필수입니다.")
+    @field:Size(max = 20, message = "이름은 20자를 초과할 수 없습니다.")
     @Schema(
         description = "반려동물 이름",
         example = "초코",
@@ -23,7 +23,7 @@ data class CreatePetRequest(
     )
     val name: String,
 
-    @field:Size(max = 20, message = "닉네임은 20자를 초과할 수 없습니다")
+    @field:Size(max = 20, message = "닉네임은 20자를 초과할 수 없습니다.")
     @Schema(
         description = "반려동물 별명",
         example = "찡찡이",
@@ -31,7 +31,7 @@ data class CreatePetRequest(
     )
     val nickname: String?,
 
-    @field:NotNull(message = "반려동물 종류는 필수입니다")
+    @field:NotNull(message = "반려동물 종류는 필수입니다.")
     @Schema(
         description = "반려동물 종류",
         example = "DOG",
@@ -40,10 +40,10 @@ data class CreatePetRequest(
     )
     val petType: PetType,
 
-    @field:NotBlank(message = "생년월일은 필수입니다")
+    @field:NotBlank(message = "생년월일은 필수입니다.")
     @field:Pattern(
         regexp = "^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$",
-        message = "날짜는 YYYY-MM-DD 형식이어야 합니다"
+        message = "날짜는 YYYY-MM-DD 형식이어야 합니다."
     )
     @Schema(
         description = "생년월일 (YYYY-MM-DD)",
@@ -52,10 +52,10 @@ data class CreatePetRequest(
     )
     val birthDate: String,
 
-    @field:NotBlank(message = "사망일자는 필수입니다")
+    @field:NotBlank(message = "사망일자는 필수입니다.")
     @field:Pattern(
         regexp = "^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$",
-        message = "날짜는 YYYY-MM-DD 형식이어야 합니다"
+        message = "날짜는 YYYY-MM-DD 형식이어야 합니다."
     )
     @Schema(
         description = "사망일자 (YYYY-MM-DD)",
@@ -64,10 +64,10 @@ data class CreatePetRequest(
     )
     val deathDate: String,
 
-    @field:NotBlank(message = "프로필 이미지 URL은 필수입니다")
+    @field:NotBlank(message = "프로필 이미지 URL은 필수입니다.")
     @field:Pattern(
         regexp = "^(https)://.*$",
-        message = "올바른 URL 형식이어야 합니다"
+        message = "올바른 URL 형식이어야 합니다."
     )
     @Schema(
         description = "프로필 이미지 URL",
@@ -77,12 +77,12 @@ data class CreatePetRequest(
     val profileImageUrl: String,
 ) {
 
-    @AssertTrue(message = "생년월일은 오늘 이전이어야 합니다")
+    @AssertTrue(message = "생년월일은 오늘 이전이어야 합니다.")
     private fun isBirthDateValid(): Boolean {
         return LocalDate.parse(birthDate) <= LocalDate.now()
     }
 
-    @AssertTrue(message = "사망일자는 생년월일과 같거나 이후여야 합니다")
+    @AssertTrue(message = "사망일자는 생년월일과 같거나 이후여야 합니다.")
     private fun isDeathDateValid(): Boolean {
         return LocalDate.parse(birthDate) <= LocalDate.parse(deathDate)
     }
