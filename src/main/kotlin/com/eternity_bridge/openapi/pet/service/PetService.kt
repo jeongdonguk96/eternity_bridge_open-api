@@ -21,7 +21,7 @@ class PetService(
        request: CreatePetRequest,
        memberId: Long
     ): Long {
-        val trxId = MDC.get("trxId") ?: "111"
+        val trxId = MDC.get("trxId")
 
         checkDuplicatedPet(request, memberId, trxId)
         val pet = petRepository.save(PetFactory.from(memberId, request))
