@@ -1,30 +1,57 @@
 package com.eternity_bridge.openapi.pet.dto
 
-import com.eternity_bridge.openapi.pet.entity.Pet
 import com.eternity_bridge.openapi.pet.enums.PetType
+import jakarta.validation.constraints.AssertTrue
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Pattern
+import jakarta.validation.constraints.Size
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.Date
 
 data class CreatePetRequest(
+    @field:NotBlank(message = "이름은 필수입니다")
+    @field:Size(max = 20, message = "이름은 20자를 초과할 수 없습니다")
     val name: String,
+
+    @field:Size(max = 20, message = "닉네임은 20자를 초과할 수 없습니다")
     val nickname: String?,
+
+    @field:NotNull(message = "반려동물 종류는 필수입니다")
     val petType: PetType,
+
+    @field:NotBlank(message = "생년월일은 필수입니다")
+    @field:Pattern(
+        regexp = "^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$",
+        message = "날짜는 YYYY-MM-DD 형식이어야 합니다"
+    )
     val birthDate: String,
+
+    @field:NotBlank(message = "사망일자는 필수입니다")
+    @field:Pattern(
+        regexp = "^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$",
+        message = "날짜는 YYYY-MM-DD 형식이어야 합니다"
+    )
     val deathDate: String,
+
+    @field:NotBlank(message = "프로필 이미지 URL은 필수입니다")
+    @field:Pattern(
+        regexp = "^(https)://.*$",
+        message = "올바른 URL 형식이어야 합니다"
+    )
+
     val profileImageUrl: String,
 ) {
 
-    fun toPet(
-        memberId: Long
-    ): Pet {
-        return Pet(
-            name = this.name,
-            nickname = nickname,
-            petType = this.petType,
-            birthDate = this.birthDate,
-            deathDate = this.deathDate,
-            profileImageUrl = this.profileImageUrl,
-            dotImageUrl = null,
-            memberId = memberId,
-        )
+    @AssertTrue(message = "생년월일은 오늘 이전이어야 합니다")
+    private fun isBirthDateValid(): Boolean {
+        return LocalDate.parse(birthDate) <= LocalDate.now()
+    }
+
+    @AssertTrue(message = "사망일자는 생년월일과 같거나 이후여야 합니다")
+    private fun isDeathDateValid(): Boolean {
+        return LocalDate.parse(birthDate) <= LocalDate.parse(deathDate)
     }
 
 }
