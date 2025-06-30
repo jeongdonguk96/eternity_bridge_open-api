@@ -21,6 +21,10 @@ class LoggingAspect {
     fun restController() {
     }
 
+    @Pointcut("@within(org.springframework.web.bind.annotation.RestControllerAdvice)")
+    fun controllerAdvice() {
+    }
+
 
     @Before("restController()")
     fun beforeAPI(
@@ -28,20 +32,44 @@ class LoggingAspect {
     ) {
         val apiName = joinPoint.signature.name
         val trxId = LogUtil.generateTrxId()
-        
+
         MDC.put("trxId", trxId)
         log.info("[$trxId] ========== $apiName START ==========")
     }
 
 
     @After("restController()")
-    fun AfterAPI(
+    fun afterAPI(
         joinPoint: JoinPoint
     ) {
         val apiName = joinPoint.signature.name
         val trxId = MDC.get("trxId")
 
         log.info("[$trxId] ========== $apiName END ==========")
+        MDC.clear()
+    }
+
+
+    @Before("controllerAdvice()")
+    fun beforeError(
+        joinPoint: JoinPoint
+    ) {
+        val apiName = joinPoint.signature.name
+        val trxId = LogUtil.generateTrxId()
+
+        MDC.put("trxId", trxId)
+        log.info("[$trxId] ========== $apiName Handler START ==========")
+    }
+
+
+    @After("controllerAdvice()")
+    fun afterError(
+        joinPoint: JoinPoint
+    ) {
+        val apiName = joinPoint.signature.name
+        val trxId = MDC.get("trxId")
+
+        log.info("[$trxId] ========== $apiName Handler END ==========")
         MDC.clear()
     }
 }
