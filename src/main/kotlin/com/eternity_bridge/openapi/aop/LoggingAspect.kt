@@ -27,11 +27,11 @@ class LoggingAspect {
         joinPoint: JoinPoint
     ) {
         val apiName = joinPoint.getSignature().getName()
-        val trxId = LogUtil.generatetrxId()
+        val trxId = LogUtil.generateTrxId()
 
         // MDC: 스레드-세이프한 로깅 컨텍스트
         MDC.put("trxId", trxId)
-        log.info("[{}] ========== {} START ==========", trxId, apiName)
+        log.info("[$trxId] ========== $apiName START ==========")
     }
 
 
@@ -42,7 +42,7 @@ class LoggingAspect {
         val apiName = joinPoint.getSignature().getName()
         val trxId = MDC.get("trxId")
 
-        log.info("[{}] ========== {} END ==========", trxId, apiName)
+        log.info("[$trxId] ========== $apiName END ==========")
         log.info("")
 
         MDC.clear()

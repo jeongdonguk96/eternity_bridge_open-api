@@ -7,7 +7,7 @@ val formatter = SimpleDateFormat("yyyyMMddHHmmssSSS")
 
 object LogUtil {
 
-    fun generatetrxId(): String {
+    fun generateTrxId(): String {
         val randomNumber = generateRandom4Digit()
         return formatter.format(Date()) + randomNumber
     }

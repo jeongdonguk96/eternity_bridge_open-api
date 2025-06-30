@@ -25,7 +25,7 @@ class PetService(
 
         checkDuplicatedPet(request, memberId, trxId)
         val pet = petRepository.save(PetFactory.from(memberId, request))
-        log.info { "$trxId 반려동물 등록 성공" }
+        log.info { "[$trxId] 반려동물 등록 성공" }
 
         return pet.id!!
     }
@@ -43,11 +43,11 @@ class PetService(
         trxId: String
     ) {
         if (petRepository.existsDuplicatedPet(request, memberId)) {
-            log.info { "$trxId 반려동물 등록 전 중복체크 결과 => 중복있음" }
+            log.info { "[$trxId] 반려동물 등록 전 중복체크 결과 => 중복있음" }
             throw CommonException(PetErrorCode.DUPLICATED_PET)
         }
 
-        log.info { "$trxId 반려동물 등록 전 중복체크 결과 => 중복없음" }
+        log.info { "[$trxId] 반려동물 등록 전 중복체크 결과 => 중복없음" }
     }
 
 }
