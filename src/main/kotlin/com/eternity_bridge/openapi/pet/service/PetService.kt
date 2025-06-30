@@ -4,6 +4,7 @@ import com.eternity_bridge.openapi.exception.code.PetErrorCode
 import com.eternity_bridge.openapi.exception.exception.CommonException
 import com.eternity_bridge.openapi.pet.dto.CreatePetRequest
 import com.eternity_bridge.openapi.pet.entity.Pet
+import com.eternity_bridge.openapi.pet.factory.PetFactory
 import com.eternity_bridge.openapi.pet.repository.PetRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.slf4j.MDC
@@ -23,7 +24,7 @@ class PetService(
         val trxId = MDC.get("trxId") ?: "111"
 
         checkDuplicatedPet(request, memberId, trxId)
-        val pet = petRepository.save(request.toPet(memberId))
+        val pet = petRepository.save(PetFactory.from(memberId, request))
         log.info { "$trxId 반려동물 등록 성공" }
 
         return pet.id!!
