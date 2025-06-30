@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 class ResponseService {
 
     fun getSuccessResponse(): CommonResponse {
-        var response = CommonResponse()
+        val response = CommonResponse()
         response.setSuccessResponse()
 
         return response
@@ -22,7 +22,7 @@ class ResponseService {
     fun getFailResponse(
         exception: Exception
     ): CommonResponse {
-        var response = CommonResponse()
+        val response = CommonResponse()
         response.setFailResponse(exception)
 
         return response
@@ -32,7 +32,7 @@ class ResponseService {
     fun <T> getSingleResponse(
         data: T
     ): SingleResponse<T> {
-        var response = SingleResponse<T>()
+        val response = SingleResponse<T>()
         response.setData(data)
         response.setSuccessResponse()
 
@@ -43,7 +43,7 @@ class ResponseService {
     fun <T> getListResponse(
         dataList: List<T>
     ): ListResponse<T> {
-        var response = ListResponse<T>()
+        val response = ListResponse<T>()
         response.setDataList(dataList)
         response.setSuccessResponse()
 
@@ -54,7 +54,7 @@ class ResponseService {
     fun <T> getPageResponse(
         dataList: Page<T>
     ): PageResponse<T> {
-        var response = PageResponse<T>()
+        val response = PageResponse<T>()
         response.setDataList(dataList)
         response.setSuccessResponse()
 
