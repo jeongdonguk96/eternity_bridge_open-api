@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController
 class PetController(
     private val petService: PetService,
     private val responseService: ResponseService,
-) {
+) : PetControllerSwagger {
 
     @PostMapping
-    fun createPet(
+    override fun createPet(
         @Valid @RequestBody request: CreatePetRequest
     ): SingleResponse<Long> {
         val memberId = 1L
@@ -30,7 +30,7 @@ class PetController(
 
 
     @GetMapping("/{petId}")
-    fun getPet(
+    override fun getPet(
         @PathVariable(name = "petId") petId: Long,
     ): SingleResponse<Pet> {
         return responseService.getSingleResponse(petService.getPet(petId))
