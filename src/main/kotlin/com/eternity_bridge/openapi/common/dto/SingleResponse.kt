@@ -1,7 +1,10 @@
 package com.eternity_bridge.openapi.common.dto
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 class SingleResponse<T> : CommonResponse() {
-    var data: T? = null
+    @JsonProperty
+    private var data: T? = null
 
     fun setData(
         data: T
