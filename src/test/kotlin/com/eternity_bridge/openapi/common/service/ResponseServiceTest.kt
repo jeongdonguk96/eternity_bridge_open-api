@@ -4,12 +4,8 @@ import com.eternity_bridge.openapi.common.AbstractTest
 import com.eternity_bridge.openapi.common.enums.CommonResponseType
 import com.eternity_bridge.openapi.exception.code.ValidationErrorCode
 import com.eternity_bridge.openapi.exception.exception.CommonException
+import org.assertj.core.api.SoftAssertions.assertSoftly
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
 
 class ResponseServiceTest : AbstractTest() {
 
@@ -19,11 +15,13 @@ class ResponseServiceTest : AbstractTest() {
         val result = responseService.getSuccessResponse()
 
         // then
-        assertNotNull(result)
-        assertTrue(result.success)
-        assertEquals(CommonResponseType.SUCCESS.code, result.code)
-        assertEquals(CommonResponseType.SUCCESS.message, result.message)
-        assertNull(result.validationErrors)
+        assertSoftly {
+            it.assertThat(result).isNotNull
+            it.assertThat(result.success).isTrue
+            it.assertThat(result.code).isEqualTo(CommonResponseType.SUCCESS.code)
+            it.assertThat(result.message).isEqualTo(CommonResponseType.SUCCESS.message)
+            it.assertThat(result.validationErrors).isNull()
+        }
     }
 
     @Test
@@ -35,11 +33,13 @@ class ResponseServiceTest : AbstractTest() {
         val result = responseService.getFailResponse(exception)
 
         // then
-        assertNotNull(result)
-        assertFalse(result.success)
-        assertEquals(ValidationErrorCode.INVALID_PARAMETER.code, result.code)
-        assertEquals(ValidationErrorCode.INVALID_PARAMETER.message, result.message)
-        assertNull(result.validationErrors)
+        assertSoftly {
+            it.assertThat(result).isNotNull
+            it.assertThat(result.success).isFalse
+            it.assertThat(result.code).isEqualTo(ValidationErrorCode.INVALID_PARAMETER.code)
+            it.assertThat(result.message).isEqualTo(ValidationErrorCode.INVALID_PARAMETER.message)
+            it.assertThat(result.validationErrors).isNull()
+        }
     }
 
 }

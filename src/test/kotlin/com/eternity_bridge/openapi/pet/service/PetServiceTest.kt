@@ -2,12 +2,11 @@ package com.eternity_bridge.openapi.pet.service
 
 import com.eternity_bridge.openapi.common.AbstractTest
 import com.eternity_bridge.openapi.pet.enums.PetType
+import org.assertj.core.api.SoftAssertions.assertSoftly
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.slf4j.MDC
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class PetServiceTest : AbstractTest() {
 
@@ -35,9 +34,12 @@ class PetServiceTest : AbstractTest() {
         val result = petService.createPet(request, memberId)
 
         // then
-        assertTrue(petRepository.existsById(result))
-        assertEquals(1L, petRepository.count())
-        assertEquals(1L, result)
+        assertSoftly {
+            it.assertThat(result).isNotNull
+            it.assertThat(result).isEqualTo(1L)
+            it.assertThat(petRepository.count()).isEqualTo(1L)
+            it.assertThat(petRepository.existsById(result)).isTrue
+        }
     }
 
     @Test
@@ -54,9 +56,12 @@ class PetServiceTest : AbstractTest() {
         val result = petService.getPet(petId)
 
         // then
-        assertEquals(1L, result.id)
-        assertEquals(petId, result.id)
-        assertEquals(request.name, result.name)
-        assertEquals(request.petType, result.petType)
+        assertSoftly {
+            it.assertThat(result).isNotNull
+            it.assertThat(result.id).isEqualTo(1L)
+            it.assertThat(result.id).isEqualTo(petId)
+            it.assertThat(result.name).isEqualTo(request.name)
+            it.assertThat(result.petType).isEqualTo(request.petType)
+        }
     }
 }

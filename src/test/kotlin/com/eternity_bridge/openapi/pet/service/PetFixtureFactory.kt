@@ -13,11 +13,13 @@ object PetFixtureFactory {
     fun createPetRequest(
         name: String? = null,
         petType: PetType? = null
-    ): CreatePetRequest = fixtureMonkey.giveMeBuilder<CreatePetRequest>()
-        .apply {
-            name?.let { set("name", it) }
-            petType?.let { set("petType", it) }
-        }
-        .sample()
+    ): CreatePetRequest {
+        return fixtureMonkey.giveMeBuilder<CreatePetRequest>()
+            .apply {
+                name?.let { set("name", it) }
+                petType?.let { set("petType", it) }
+            }
+            .sample()
+    }
 
 }

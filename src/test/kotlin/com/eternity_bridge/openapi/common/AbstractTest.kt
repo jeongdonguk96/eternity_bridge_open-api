@@ -37,7 +37,7 @@ abstract class AbstractTest : InitializingBean {
         // 2. 테이블 간의 참조 무결성을 비활성화한다.
         em.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate()
 
-        // 3. 테이블들을 ID 값을 1로 초기화해준다.
+        // 3. 테이블을 트렁케이트한 후 ID 값을 1로 초기화해준다.
         entities.forEach { entity ->
             em.createNativeQuery("TRUNCATE TABLE $entity").executeUpdate()
             em.createNativeQuery("ALTER TABLE $entity ALTER COLUMN id RESTART WITH 1").executeUpdate()
