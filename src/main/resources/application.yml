@@ -1,6 +1,6 @@
 spring:
   application:
-    name: open-api
+    name: openapi
   profiles:
     active: home
 
